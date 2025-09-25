@@ -7,8 +7,8 @@ intrinsic_sdk_generate_service_manifest(
   PROTOS_TARGET listener_service_protos
 )
 add_executable(listener_service_main
-  listener_service_main.cpp
-  minimal_subscriber.cpp
+  listener_service_main.cc
+  minimal_subscriber.cc
 )
 
 target_link_libraries(
@@ -20,7 +20,10 @@ target_link_libraries(
   intrinsic_sdk_cmake::intrinsic_sdk_cmake
 )
 
-add_dependencies(listener_service_main listener_service_manifest listener_service_default_config)
+add_dependencies(listener_service_main
+  listener_service_manifest
+  listener_service_default_config
+)
 
 # Install the listener service
 install(
