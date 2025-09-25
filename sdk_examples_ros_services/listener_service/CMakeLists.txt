@@ -17,7 +17,7 @@ target_link_libraries(
   ament_index_cpp::ament_index_cpp
   ${std_msgs_TARGETS}
   listener_service_protos
-  intrinsic_sdk::intrinsic_sdk
+  intrinsic_sdk_cmake::intrinsic_sdk_cmake
 )
 
 add_dependencies(listener_service_main listener_service_manifest listener_service_default_config)
