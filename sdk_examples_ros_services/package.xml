@@ -5,12 +5,11 @@
   <version>0.0.1</version>
   <description>Intrinsic Flowstate SDK Examples - Services</description>
   <maintainer email="mjcarroll@intrinsic.ai">Michael Carroll</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Intrinsic License</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>sdk_examples_ros_interfaces</depend>
-  <depend>intrinsic_sdk</depend>
+  <depend>intrinsic_sdk_ros</depend>
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
 

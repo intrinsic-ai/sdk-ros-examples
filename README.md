@@ -1,6 +1,6 @@
 # Intrinsic SDK Examples
 
-This is a repository of example skill implementations using the [Intrinsic SDK for ROS](github.com/intrinsic-dev/intrinsic_sdk_ros).
+This is a repository of example skill implementations using the [Intrinsic SDK for ROS](github.com/intrinsic-ai/sdk-ros).
 
 ## Disclaimer
 
