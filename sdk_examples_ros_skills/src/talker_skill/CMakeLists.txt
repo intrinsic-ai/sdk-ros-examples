@@ -25,14 +25,19 @@ intrinsic_sdk_generate_skill_manifest_pbbin(
 # Generate the main function for this skill
 intrinsic_sdk_generate_skill_main_cc(
   MANIFEST_PBBIN "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.manifest.pbbin"
-  HEADER_FILES talker_skill.hh
+  CONFIG_PBBIN "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
+  HEADER_FILES talker_skill.h
   MAIN_FILE_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/talker_skill_main.cc
 )
 
 install(
-  FILES "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
+  FILES
+    talker_skill.manifest.textproto
+    "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
+    "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_protos.desc"
   DESTINATION share/${PROJECT_NAME}
 )
+
 add_executable(talker_skill_main
   talker_skill.cc
   ${CMAKE_CURRENT_BINARY_DIR}/talker_skill_main.cc
@@ -54,9 +59,4 @@ add_dependencies(talker_skill_main talker_skill_config)
 install(
   TARGETS talker_skill_main
   DESTINATION lib/${PROJECT_NAME}
-)
-
-install(
-  FILES ${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin
-  DESTINATION "share/${PROJECT_NAME}"
 )

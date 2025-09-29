@@ -19,6 +19,9 @@ dependencies {
 }
 parameter {
   message_full_name: "com.example.TalkerSkillParams"
+  default_value: {
+    type_url: "type.googleapis.com/com.example.TalkerSkillParams"
+  }
 }
 return_type {
   message_full_name: "com.example.TalkerSkillResult"

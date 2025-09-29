@@ -1,11 +1,8 @@
-#include "talker_skill.hh"
-#include "talker_skill.pb.h"
-#include "minimal_publisher.hh"
+#include "talker_skill.h"
 
 #include <memory>
-
-#include <rclcpp/node_options.hpp>
 #include <rclcpp/node.hpp>
+#include <rclcpp/node_options.hpp>
 #include <rclcpp/rclcpp.hpp>
 
 #include "absl/log/log.h"
@@ -18,18 +15,18 @@
 #include "intrinsic/skills/proto/skill_service.pb.h"
 #include "intrinsic/util/status/status_conversion_grpc.h"
 #include "intrinsic/util/status/status_macros.h"
-
+#include "minimal_publisher.h"
+#include "talker_skill.pb.h"
 
 using ::com::example::TalkerSkillParams;
 using ::com::example::TalkerSkillResult;
 
+using ::intrinsic::WaitForChannelConnected;
+using ::intrinsic::skills::ExecuteContext;
 using ::intrinsic::skills::ExecuteRequest;
 using ::intrinsic::skills::SkillInterface;
-using ::intrinsic::skills::ExecuteContext;
-using ::intrinsic::WaitForChannelConnected;
 
-class InitRos
-{
+class InitRos {
  public:
   InitRos() { rclcpp::init(0, nullptr); }
   ~InitRos() { rclcpp::shutdown(); }
@@ -53,13 +50,11 @@ std::unique_ptr<SkillInterface> TalkerSkill::CreateSkill() {
 // -----------------------------------------------------------------------------
 
 absl::StatusOr<std::unique_ptr<google::protobuf::Message>> TalkerSkill::Execute(
-    const ExecuteRequest& request, ExecuteContext& context) {
-
+    const ExecuteRequest& request, ExecuteContext& /*context*/) {
   RCLCPP_INFO(minimal_publisher_node_.get_logger(), "TalkerSkill::Execute");
 
   // Get parameters.
-  INTR_ASSIGN_OR_RETURN(
-    auto params, request.params<TalkerSkillParams>());
+  INTR_ASSIGN_OR_RETURN(auto params, request.params<TalkerSkillParams>());
 
   minimal_publisher_node_.Publish(params.message());
 
