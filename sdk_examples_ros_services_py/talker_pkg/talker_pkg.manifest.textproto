@@ -1,0 +1,33 @@
+# proto-file: https://github.com/intrinsic-ai/sdk/blob/main/intrinsic/assets/services/proto/service_manifest.proto
+# proto-message: intrinsic_proto.services.ServiceManifest
+
+metadata {
+  id {
+    package: "com.example"
+    name: "talker_pkg"
+  }
+  vendor {
+    display_name: "Intrinsic"
+  }
+  documentation {
+    description: "A ROS talker service that publishes to a ROS topic."
+  }
+  display_name: "Talker Service (ROS)"
+}
+service_def {
+  real_spec {
+    image {
+      archive_filename: "talker_pkg.tar"
+    }
+  }
+  sim_spec {
+    image {
+      archive_filename: "talker_pkg.tar"
+    }
+  }
+}
+assets {
+  default_configuration_filename: "default_config.binarypb",
+  parameter_descriptor_filename: "parameter-descriptor-set.proto.bin",
+  image_filenames: ["talker_pkg.tar"]
+}

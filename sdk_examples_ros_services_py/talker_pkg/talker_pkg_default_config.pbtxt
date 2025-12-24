@@ -1,0 +1,6 @@
+# proto-file: google/protobuf/any.proto
+# proto-message: Any
+[type.googleapis.com/ros.RosConfig] {
+  ros_args: "-r"
+  ros_args: "topic:=topic"  # an example of the topic remapping syntax
+}
