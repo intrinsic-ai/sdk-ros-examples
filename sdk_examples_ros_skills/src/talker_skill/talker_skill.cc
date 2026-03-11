@@ -21,7 +21,7 @@
 using ::com::example::TalkerSkillParams;
 using ::com::example::TalkerSkillResult;
 
-using ::intrinsic::WaitForChannelConnected;
+using ::intrinsic::connect::WaitForChannelConnected;
 using ::intrinsic::skills::ExecuteContext;
 using ::intrinsic::skills::ExecuteRequest;
 using ::intrinsic::skills::SkillInterface;
