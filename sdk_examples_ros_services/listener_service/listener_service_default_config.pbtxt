@@ -1,7 +1,6 @@
 # proto-file: google/protobuf/any.proto
 # proto-message: Any
 [type.googleapis.com/ros.RosConfig] {
-  zenoh_router_address: "tcp/zenoh-router.app-intrinsic-base:7447"
   ros_args: "-r"
-  ros_args: "topic:=topic"  # Define the topic that is listened to
+  ros_args: "topic:=topic"  # An example of topic remapping syntax
 }

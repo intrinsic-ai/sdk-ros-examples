@@ -12,7 +12,7 @@ find_package(std_msgs REQUIRED)
 
 # Intrinsic Dependencies
 find_package(absl REQUIRED)
-find_package(intrinsic_sdk_ros REQUIRED)
+find_package(intrinsic_sdk_cmake REQUIRED)
 
 add_subdirectory(src/talker_skill)
 

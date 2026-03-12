@@ -3,7 +3,7 @@ syntax = "proto3";
 package com.example;
 
 message TalkerSkillParams {
-  // Service to call
+  // Message to send when the skill is executed
   string message = 1;
 }
 
