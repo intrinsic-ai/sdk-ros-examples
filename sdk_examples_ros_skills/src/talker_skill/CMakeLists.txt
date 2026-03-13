@@ -33,6 +33,7 @@ intrinsic_sdk_generate_skill_main_cc(
 install(
   FILES
     talker_skill.manifest.textproto
+    "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.manifest.pbbin"
     "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
     "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_protos.desc"
   DESTINATION share/${PROJECT_NAME}
