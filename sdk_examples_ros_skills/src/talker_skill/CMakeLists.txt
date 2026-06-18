@@ -8,55 +8,77 @@ target_link_libraries(minimal_publisher
   ${std_msgs_TARGETS}
 )
 
-# Create Intrinsic Skill
-intrinsic_sdk_generate_skill(
-  SKILL_NAME talker_skill
+# Generate the skill's protobuf files, protobuf library, and descriptor set file.
+intrinsic_sdk_protobuf_generate(
+  NAME talker_skill
   SOURCES talker_skill.proto
+  TARGET talker_skill_protos
+  DESCRIPTOR_SET_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.desc"
+)
+
+# Generate the skill config file.
+intrinsic_sdk_generate_skill_config(
+  TARGET talker_skill_skill_config
+  SKILL_NAME talker_skill
   MANIFEST talker_skill.manifest.textproto
-  PROTOS_TARGET talker_skill_protos
-)
-
-intrinsic_sdk_generate_skill_manifest_pbbin(
-  TARGET talker_skill_manifest
-  MANIFEST_TEXTPROTO talker_skill.manifest.textproto
-  MANIFEST_PBBIN_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.manifest.pbbin"
-)
-
-# Generate the main function for this skill
-intrinsic_sdk_generate_skill_main_cc(
-  MANIFEST_PBBIN "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.manifest.pbbin"
-  CONFIG_PBBIN "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
-  HEADER_FILES talker_skill.h
-  MAIN_FILE_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/talker_skill_main.cc
+  PROTO_DESCRIPTOR_FILE "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.desc"
+  SKILL_CONFIG_FILE_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
 )
 
 install(
   FILES
-    talker_skill.manifest.textproto
     "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
-    "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_protos.desc"
+    talker_skill.manifest.textproto
   DESTINATION share/${PROJECT_NAME}
 )
 
+install(
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.desc"
+  DESTINATION share/${PROJECT_NAME}
+  RENAME talker_skill_protos.desc
+)
+
+# Generate the c++ main file for the skill.
+intrinsic_sdk_generate_skill_main_cc(
+  MANIFEST talker_skill.manifest.textproto
+  HEADER_FILES talker_skill.h
+  MAIN_FILE_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_main.cc"
+)
+
+# Build the skill main.
 add_executable(talker_skill_main
+  # Generated main file
+  "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_main.cc"
+  # User created skill class
   talker_skill.cc
-  ${CMAKE_CURRENT_BINARY_DIR}/talker_skill_main.cc
 )
 
 target_include_directories(talker_skill_main
   PRIVATE
-  ${CMAKE_CURRENT_SOURCE_DIR}
+    "${CMAKE_CURRENT_SOURCE_DIR}"
 )
 
 target_link_libraries(talker_skill_main
+  # SDK library
   intrinsic_sdk_cmake::intrinsic_sdk_cmake
+  # Target that generates skill's protobuf files and library
   talker_skill_protos
   minimal_publisher
 )
 
-add_dependencies(talker_skill_main talker_skill_config)
+install(TARGETS talker_skill_main DESTINATION lib/${PROJECT_NAME} OPTIONAL)
+add_dependencies(talker_skill_main talker_skill_skill_config)
 
-install(
-  TARGETS talker_skill_main
-  DESTINATION lib/${PROJECT_NAME}
-)
+# Create the skill container image:
+#
+# ros2 run intrinsic_sdk_bundle_library_py intrinsic_sdk_build container \
+#   --skill_name talker_skill \
+#   --skill_package sdk_examples_ros_skills \
+#   --skill_type cpp
+
+# To build the bundle, source install/setup.bash and then run:
+#
+# ros2 run intrinsic_sdk_bundle_library_py intrinsic_sdk_build bundle \
+#   --skill_name talker_skill \
+#   --skill_package sdk_examples_ros_skills \
+#   --manifest_path `ros2 pkg prefix --share sdk_examples_ros_skills`/talker_skill.manifest.textproto
