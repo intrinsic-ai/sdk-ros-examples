@@ -9,23 +9,25 @@ target_link_libraries(minimal_publisher
 )
 
 # Create Intrinsic Skill
-intrinsic_sdk_generate_skill(
-  SKILL_NAME talker_skill
+intrinsic_sdk_protobuf_generate(
+  NAME talker_skill
   SOURCES talker_skill.proto
-  MANIFEST talker_skill.manifest.textproto
-  PROTOS_TARGET talker_skill_protos
+  TARGET talker_skill_protos
+  DESCRIPTOR_SET_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_protos.desc"
 )
 
-intrinsic_sdk_generate_skill_manifest_pbbin(
-  TARGET talker_skill_manifest
-  MANIFEST_TEXTPROTO talker_skill.manifest.textproto
-  MANIFEST_PBBIN_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.manifest.pbbin"
+# Generate the skill config file.
+intrinsic_sdk_generate_skill_config(
+  TARGET talker_skill_config
+  SKILL_NAME talker_skill
+  MANIFEST talker_skill.manifest.textproto
+  PROTO_DESCRIPTOR_FILE "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_protos.desc"
+  SKILL_CONFIG_FILE_OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
 )
 
 # Generate the main function for this skill
 intrinsic_sdk_generate_skill_main_cc(
-  MANIFEST_PBBIN "${CMAKE_CURRENT_BINARY_DIR}/talker_skill.manifest.pbbin"
-  CONFIG_PBBIN "${CMAKE_CURRENT_BINARY_DIR}/talker_skill_config.pbbin"
+  MANIFEST talker_skill.manifest.textproto
   HEADER_FILES talker_skill.h
   MAIN_FILE_OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/talker_skill_main.cc
 )
